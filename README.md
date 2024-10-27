@@ -76,7 +76,7 @@ plt.plot(train_data['Date'], train_data['Quantity'], label='2021-2022 Data Quant
 plt.plot(val_data['Date'].iloc[time_step:], val_predict[:, 0], label='2023 Data Quantity', color='red')
 plt.xlabel('Date')
 plt.ylabel('Quantity')
-plt.title('Sales Quantity Prediction Using LSTM (Set 1)')
+plt.title('Quantity Data')
 plt.legend()
 plt.show()
 
@@ -85,6 +85,33 @@ plt.plot(train_data['Date'], train_data['Amount'], label='2021-2022 Data Amount'
 plt.plot(val_data['Date'].iloc[time_step:], val_predict[:, 1], label='2023 Data Amount', color='red')
 plt.xlabel('Date')
 plt.ylabel('Amount')
-plt.title('Sales Amount Prediction Using LSTM (Set 1)')
+plt.title('Amount Data')
+plt.legend()
+plt.show()
+
+test_dataset = load_and_preprocess_data(DATA_FILES[1])
+
+scaled_test_data = scaler.transform(test_dataset[['Quantity', 'Amount']])
+
+X_test, Y_test_quantity, Y_test_amount = create_dataset(scaled_test_data, time_step)
+X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], 1)
+
+test_predict = model.predict(X_test)
+
+test_predict = scaler.inverse_transform(test_predict)
+
+plt.figure(figsize=(15, 6))
+plt.plot(test_dataset['Date'].iloc[time_step:], test_predict[:, 0], label='Test Predictions', color='green')
+plt.xlabel('Date')
+plt.ylabel('Quantity')
+plt.title('Test Quantity')
+plt .legend()
+plt.show()
+
+plt.figure(figsize=(15, 6))
+plt.plot(test_dataset['Date'].iloc[time_step:], test_predict[:, 1], label='Test Predictions', color='green')
+plt.xlabel('Date')
+plt.ylabel('Amount')
+plt.title('Test Amount')
 plt.legend()
 plt.show()
